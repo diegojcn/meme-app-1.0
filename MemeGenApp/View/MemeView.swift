@@ -11,21 +11,24 @@ import UIKit
 
 class MemeView : UIView, UITextFieldDelegate{
     
+    @IBOutlet weak var topBarButton: UIToolbar!
+    
+    @IBOutlet weak var bottomBarButton: UIToolbar!
+    
     @IBOutlet weak var imagem: UIImageView!
     
-    @IBOutlet weak var cameraBtn: UIButton!
+    @IBOutlet weak var cameraBtn: UIBarButtonItem!
     
     @IBOutlet weak var topText: UITextField!
     
     @IBOutlet weak var bottomText: UITextField!
     
-    @IBOutlet weak var shareBtn: UIButton!
+    @IBOutlet weak var shareBtn: UIBarButtonItem!
     
-    @IBOutlet weak var trashBtn: UIButton!
+    @IBOutlet weak var trashBtn: UIBarButtonItem!
     
     @IBOutlet weak var imageView: UIView!
     
-    @IBOutlet weak var btnView: UIView!
     
     func initializer(){
         
@@ -44,11 +47,20 @@ class MemeView : UIView, UITextFieldDelegate{
         
         setStyle(toTextField: self.topText, memeTextAttributes: attributes, textDefault : "TOP")
         setStyle(toTextField: self.bottomText, memeTextAttributes: attributes, textDefault : "BOTTOM")
+        setToolBarStyle()
         
         self.imagem.image = nil
         
         showTextFields(show: false)
         showButtons(show: false)
+    }
+    
+    func setToolBarStyle()  {
+        
+        self.topBarButton.sizeToFit()
+        self.topBarButton.center = CGPoint(x: Double(self.frame.width/2) , y : Double(100))
+        
+        
     }
     
     func setStyle(toTextField textField: UITextField, memeTextAttributes : [String : Any], textDefault : String) {
@@ -62,24 +74,16 @@ class MemeView : UIView, UITextFieldDelegate{
     
     func showButtons(show: Bool){
         
-        if(show){
-            self.shareBtn.isHidden = false
-            self.trashBtn.isHidden = false
-        }else{
-            self.shareBtn.isHidden = true
-            self.trashBtn.isHidden = true
+        if show {
+            self.shareBtn.isEnabled = true
+            self.trashBtn.isEnabled = true
+        } else {
+            self.shareBtn.isEnabled = false
+            self.trashBtn.isEnabled = false
         }
         
     }
     
-    func showToolBar(show: Bool){
-        if(show){
-            self.btnView.isHidden = false
-        } else{
-            self.btnView.isHidden = true
-        }
-        
-    }
     
     func showTextFields(show: Bool){
         if(show){
@@ -94,9 +98,9 @@ class MemeView : UIView, UITextFieldDelegate{
     }
     
     func dismissKeyboard(tag : Int){
-        if(tag == 0){
+        if tag == 0 {
             self.topText.resignFirstResponder()
-        }else if ((tag == 1)){
+        }else if tag == 1 {
             self.bottomText.resignFirstResponder()
         }
     }
@@ -122,9 +126,9 @@ extension MemeView {
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         
-        if textField.tag == 0 {
+        if textField.tag == 0 && textField.text == ""{
             textField.text = "TOP"
-        }else if textField.tag == 1 {
+        }else if textField.tag == 1 && textField.text == ""{
             textField.text = "BOTTOM"
         }
         

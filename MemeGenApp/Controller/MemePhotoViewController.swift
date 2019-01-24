@@ -25,6 +25,7 @@ UINavigationControllerDelegate {
         super.viewDidLoad()
         self.imagePicker.delegate = self
         self.memeView.initializer()
+        self.memeView.showButtons(show: false)
         
         
     }
@@ -74,28 +75,12 @@ UINavigationControllerDelegate {
         return keyboardSize.cgRectValue.height/2
     }
     
-    func showToolBarAndNavBar(show: Bool) {
-        
-        if show {
-            self.navigationController?.setNavigationBarHidden(false, animated: false)
-            self.memeView.showToolBar(show: true)
-        } else {
-            self.navigationController?.setNavigationBarHidden(true, animated: false)
-            self.memeView.showToolBar(show: false)
-        }
-        
-    }
     
     func generateMemedImage() -> UIImage {
-        
-        showToolBarAndNavBar(show: false)
-        
         UIGraphicsBeginImageContext(self.memeView.imageView.frame.size)
         self.memeView.imageView.drawHierarchy(in: self.memeView.imageView.frame, afterScreenUpdates: true)
-        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        showToolBarAndNavBar(show: true)
         
         return memedImage
     }
@@ -121,11 +106,11 @@ UINavigationControllerDelegate {
     }
     
     
-    @IBAction func chooseImageOrTakePhoto(_ sender: UIButton) {
+    @IBAction func chooseImageOrTakePhoto(_ sender: Any) {
         
-        if sender.tag == 0 {
+        if (sender as AnyObject).tag == 0 {
             self.imagePicker.sourceType = .photoLibrary
-        } else if sender.tag == 1 {
+        } else if (sender as AnyObject).tag == 1 {
             self.imagePicker.sourceType = .camera
         }
         
@@ -133,7 +118,8 @@ UINavigationControllerDelegate {
         
     }
     
-    @IBAction func createNewMeme(_ sender: UIButton){
+    @IBAction func createAndShareNewMeme(_ sender: Any) {
+        
         let memedImage = generateMemedImage()
         
         let meme = Meme(topText: self.memeView.topText.text!, bottomText: self.memeView.bottomText.text!, originalImagem: self.memeView.imagem, memedImage: memedImage)
@@ -149,7 +135,9 @@ UINavigationControllerDelegate {
         }
         
         self.present(controller, animated: true, completion: nil)
+        
     }
+    
     
     func save(meme : Meme){
         

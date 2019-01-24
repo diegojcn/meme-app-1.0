@@ -27,17 +27,9 @@ class MemeView : UIView, UITextFieldDelegate{
     
     @IBOutlet weak var btnView: UIView!
     
-    let textDefault : String = "DIGITE O TEXTO"
-    
     func initializer(){
         
-        self.topText.delegate = self
-        self.bottomText.delegate = self
-        
         self.cameraBtn.isEnabled =  UIImagePickerController.isSourceTypeAvailable(.camera)
-        
-        self.topText.text = self.textDefault
-        self.bottomText.text = self.textDefault
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
@@ -50,15 +42,22 @@ class MemeView : UIView, UITextFieldDelegate{
             NSAttributedStringKey.font : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!
             ] as! [String : Any]
         
-        self.topText.defaultTextAttributes = attributes
-        self.bottomText.defaultTextAttributes = attributes
+        setStyle(toTextField: self.topText, memeTextAttributes: attributes, textDefault : "TOP")
+        setStyle(toTextField: self.bottomText, memeTextAttributes: attributes, textDefault : "BOTTOM")
         
-        self.topText.clearsOnBeginEditing = true
-        self.bottomText.clearsOnBeginEditing = true
         self.imagem.image = nil
         
         showTextFields(show: false)
         showButtons(show: false)
+    }
+    
+    func setStyle(toTextField textField: UITextField, memeTextAttributes : [String : Any], textDefault : String) {
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+        textField.autocapitalizationType = .allCharacters
+        textField.delegate = self
+        textField.clearsOnBeginEditing = true
+        textField.text = textDefault
     }
     
     func showButtons(show: Bool){
@@ -123,8 +122,10 @@ extension MemeView {
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         
-        if (textField.text?.elementsEqual(""))! {
-            textField.text = textDefault
+        if textField.tag == 0 {
+            textField.text = "TOP"
+        }else if textField.tag == 1 {
+            textField.text = "BOTTOM"
         }
         
     }

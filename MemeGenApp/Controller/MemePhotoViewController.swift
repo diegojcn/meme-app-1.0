@@ -9,7 +9,7 @@
 
 import UIKit
 
-class MemeViewController: UIViewController , UIImagePickerControllerDelegate,
+class MemePhotoViewController: UIViewController , UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     
     @IBOutlet var memeView: MemeView!
@@ -35,9 +35,9 @@ UINavigationControllerDelegate {
     
     func subscribeToKeyboardNotifications() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(MemeViewController.keyboardChange(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(MemeViewController.keyboardChange(_:)), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(MemeViewController.keyboardChange(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemePhotoViewController.keyboardChange(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemePhotoViewController.keyboardChange(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemePhotoViewController.keyboardChange(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
         
     }
     
@@ -47,10 +47,6 @@ UINavigationControllerDelegate {
         
     }
     
-    deinit {
-        
-        unsubscribeFromKeyboardNotifications()
-    }
     
     @objc func keyboardChange(_ notification:Notification) {
         
